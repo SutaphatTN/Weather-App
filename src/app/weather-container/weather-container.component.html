@@ -1,0 +1,501 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="container" [ngStyle]="{ 'background-image': this.weatherService.getBackgroundImage()}" style="max-width: 2000px;">
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="search-input" style="margin-top: 20px;">
+
+                <input type="text" #cityQuery placeholder= '{{ "search" | transloco }}' [value]="selectedCity"
+                    (input)="this.weatherService.searchCityWeather(cityQuery.value)">
+                    
+                <fa-icon class="fa search-icon" (click)="this.weatherService.getWeatherSearch(cityQuery.value)"
+                    [icon]="faMagnifyingGlass" style="color: #a19f9f;"></fa-icon>
+
+                <ul *ngIf="this.weatherService.searchResults"
+                    [class.active]="this.weatherService.searchResults.length > 0">
+                    <li *ngFor="let result of this.weatherService.searchResults">
+                        <button 
+                            (click)="this.weatherService.getWeatherSearch(result.name)">
+                            <fa-icon class="fa" [icon]="faLocationDot" style="color: #c4c4c4; margin-right: 5px;"></fa-icon>
+                            {{ result.name }}, {{ result.state }}, {{ result.country }}
+                        </button>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="location-icon"
+                (click)="this.weatherService.getWeatherLocationNow()">
+                <fa-icon class="fa" [icon]="faLocation" style="color: #ffffff;"></fa-icon>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="nav-bar-metric">
+                <div class="celsius" (click)="onCelsiusClick();"
+                    [className]="this.weatherService.celsius == true ? 'celsius celsius-active':'celsius'">°C</div>
+                <div class="fahrenheit" (click)="onFahrenheitClick()"
+                    [className]="this.weatherService.fahrenheit == true ? 'fahrenheit fahrenheit-active':'fahrenheit'">
+                    °F</div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="row">
+        
+        <div class="col-md-4">
+            <!-- Left section -->
+            <div class="left-container mt-4" style="border-radius: 20px; background-color: rgba(255, 255, 255, 0.5);">
+                
+                <!-- Location -->
+                <div class="left-container-location m-3" *ngIf="!this.weatherService.isSearching && !this.weatherService.isSearchingSearch">
+                    <div class="left-container-data">
+        
+                        <div class="d-flex justify-content-between">
+                            <span class="left-now">{{ "now" | transloco }}</span>
+                            <span class="left-time ml-auto">{{ this.weatherService.currentTime | date: "HH:mm"}}</span>
+                        </div>
+                        
+                        <div class="left-container-temp-data">
+                            {{
+                            this.weatherService.celsius == true ?
+                            (this.weatherService.weatherNow?.main.temp | number:'1.0-0') :
+                            (this.weatherService.celsiusToFah(this.weatherService.weatherNow?.main.temp) |
+                            number:'1.0-0')
+                            }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+        
+                            <span class="left-container-temp-img">
+                                    <img *ngIf="this.weatherService.weatherNow?.weather[0]?.icon" src="./../../assets/img-weather/{{ this.weatherService.weatherNow.weather[0].icon }}.png" alt="">
+                            </span>
+                        </div>
+                        
+                        <div class="left-container-description-value">{{ this.weatherService.weatherNow?.weather[0].description }}</div>
+        
+                        <div class="dividing-line"></div>
+        
+                        <div class="left-container-date-daytime">
+                            <div class="left-container-daytime-img"><fa-icon class="fa" [icon]="faCalendarDays"
+                                    style="color: rgb(200, 200, 200);"></fa-icon></div>
+                            <div class="left-container-daytime-value">{{ this.weatherService.currentTime | date: "EEEE dd, MMM"}}</div>
+                        </div>
+
+                        <div class="left-container-on-location">
+                            <div class="left-container-on-location-img"><fa-icon class="fa" [icon]="faLocationArrow"
+                                    style="color: rgb(200, 200, 200);"></fa-icon></div>
+                            <div class="left-container-on-location-value">{{ this.weatherService.InfoLocation?.name }}, {{ this.weatherService.InfoLocation?.country }}</div>
+                        </div>
+        
+                    </div>
+                    
+                    <div class="left-container-chart">
+                        <h4>{{ "5DForecast" | transloco }}</h4>
+                        <canvas id="LocationChart"></canvas>
+                    </div>
+                      
+                </div>
+
+                <!-- city -->
+                <div class="left-container-city m-3" *ngIf="this.weatherService.isSearching || this.weatherService.isSearchingSearch">
+                    <div class="left-container-data">
+
+                        <div class="d-flex justify-content-between">
+                            <span class="left-now">{{ "now" | transloco }}</span>
+                            <span class="left-time ml-auto">{{ this.weatherService.currentTime | date: "HH:mm"}}</span>
+                        </div>
+
+                        <div class="left-container-temp-data">
+                            {{
+                            this.weatherService.celsius == true ?
+                            (this.weatherService.weatherDate?.main.temp | number:'1.0-0') :
+                            (this.weatherService.celsiusToFah(this.weatherService.weatherDate?.main.temp) |
+                            number:'1.0-0')
+                            }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+
+                            <span class="left-container-temp-img">
+                                <img *ngIf="this.weatherService.weatherDate?.weather[0]?.icon" src="./../../assets/img-weather/{{ this.weatherService.weatherDate.weather[0].icon }}.png" alt="">
+                            </span>
+                        </div>
+
+                        <div class="left-container-description-value">{{ this.weatherService.weatherDate?.weather[0].description }}</div>
+
+                        <div class="dividing-line"></div>
+
+                        <div class="left-container-date-daytime">
+                            <div class="left-container-daytime-img"><fa-icon class="fa" [icon]="faCalendarDays"
+                                    style="color: rgb(200, 200, 200);"></fa-icon></div>
+                            <div class="left-container-daytime-value">{{ this.weatherService.currentTime | date: "EEEE dd, MMM"}}</div>
+                        </div>
+
+                        <div class="left-container-on-location">
+                            <div class="left-container-on-location-img"><fa-icon class="fa" [icon]="faLocationArrow"
+                                    style="color: rgb(200, 200, 200);"></fa-icon></div>
+                            <div class="left-container-on-location-value">{{ this.weatherService.InfoCity?.name }}, {{ this.weatherService.InfoCity?.country }}</div>
+                        </div>
+
+                    </div>
+
+                    <div class="left-container-chart">
+                        <h4>{{ "5DForecast" | transloco }}</h4>
+                        <canvas id="CityChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end left -->
+
+        <!-- right section -->
+        <div class="col-md-8 underline">
+            <div class="right-container mt-4">
+                <div class="nav-bar-tabs">{{ "today" | transloco }}</div>
+
+                <!-- location -->
+                <div class="right-container-location" *ngIf="!this.weatherService.isSearching && !this.weatherService.isSearchingSearch">
+                    <div class="hour-forecast">{{ "3HForecast" | transloco }}</div>
+
+                    <div class="right-container-today-cards">
+                        <div class="card-container">
+                            <div class="card card-time" *ngFor="let item of this.weatherService.timeline">
+                                <div class="card-dayCel">{{ item.time | date: "HH : mm"}}</div>
+                                <div class="card-temp-img"><img src="./../../assets/img-weather/{{ item.icon }}.png" alt=""></div>
+                                <div class="card-dayCel">
+                                    {{
+                                    this.weatherService.celsius == true ?
+                                    (item.temp | number:'1.2-2') :
+                                    (this.weatherService.celsiusToFah(item.temp) | number:'1.2-2')
+                                    }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="right-container-highlight m-4">
+                        <div class="right-container-highlight-title">{{ "todayH" | transloco }}</div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+
+                                        <div class="card card-highlight"> 
+                                            <div class="row border-middle">
+                                            
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "tempMin" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/temp_min.png" alt="" class="temp-logo">
+                                                            <span class="temp-value">
+                                                                {{
+                                                                this.weatherService.celsius == true ?
+                                                                (this.weatherService.weatherNow?.main.temp_min | number:'1.1-1') :
+                                                                (this.weatherService.celsiusToFah(this.weatherService.weatherNow?.main.temp_min) |
+                                                                number:'1.1-1')
+                                                                }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "tempMax" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/temp_max.png" alt="" class="temp-logo">
+                                                            <span class="temp-value">
+                                                                {{
+                                                                this.weatherService.celsius == true ?
+                                                                (this.weatherService.weatherNow?.main.temp_max | number:'1.1-1') :
+                                                                (this.weatherService.celsiusToFah(this.weatherService.weatherNow?.main.temp_max) |
+                                                                number:'1.1-1')
+                                                                }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+
+                                        <div class="card card-highlight">
+                                            <div class="row border-middle">
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "sunrise" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/sunrise.png" alt="" class="sun-img">
+                                                            <div class="sun-time">{{
+                                                                this.weatherService.convertTimes(this.weatherService.InfoLocation?.sunrise) }} {{ "sunriseTime" | transloco }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "sunset" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/sunset.png" alt="" class="sun-img">
+                                                            <div class="sun-time">{{
+                                                                this.weatherService.convertTimes(this.weatherService.InfoLocation?.sunset) }} {{ "sunsetTime" | transloco }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "feel" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/temp_like.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">
+                                                        {{
+                                                        this.weatherService.celsius == true ?
+                                                        (this.weatherService.weatherNow?.main.feels_like | number:'1.1-1') :
+                                                        (this.weatherService.celsiusToFah(this.weatherService.weatherNow?.main.feels_like) |
+                                                        number:'1.1-1')
+                                                        }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "humidity" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/humidity.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{ this.weatherService.weatherNow?.main.humidity }}<sup>%</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "pressure" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/pressure.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{ this.weatherService.weatherNow?.main.pressure }}<sup>hPa</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "visibility" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/visibility.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{
+                                                        this.weatherService.convertKM(this.weatherService.weatherNow?.visibility) }}<sup>km</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>    
+
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- city -->
+                <div class="right-container-city" *ngIf="this.weatherService.isSearching || this.weatherService.isSearchingSearch">
+                     <div class="hour-forecast">{{ "3HForecast" | transloco }}</div>
+
+                    <div class="right-container-today-cards">
+                        <div class="card-container">
+                            <div class="card card-time" *ngFor="let item of this.weatherService.cityLine">
+                                <div>{{ item.time | date: "HH:mm"}}</div>
+                                <div class="card-temp-img"><img src="./../../assets/img-weather/{{ item.icon }}.png" alt=""></div>
+                                <div>
+                                    {{
+                                    this.weatherService.celsius == true ?
+                                    (item.temp | number:'1.2-2') :
+                                    (this.weatherService.celsiusToFah(item.temp) | number:'1.2-2')
+                                    }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="right-container-highlight m-4">
+                        <div class="right-container-highlight-title">{{ "todayH" | transloco }}</div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+
+                                        <div class="card card-highlight"> 
+                                            <div class="row border-middle">
+                                            
+                                                <div class="col-md-6">
+                                                    <div class="card-body ">
+                                                        <h5 class="card-title">{{ "tempMin" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/temp_min.png" alt="" class="temp-logo">
+                                                            <span class="temp-value">
+                                                                {{
+                                                                this.weatherService.celsius == true ?
+                                                                (this.weatherService.weatherDate?.main.temp_min | number:'1.1-1') :
+                                                                (this.weatherService.celsiusToFah(this.weatherService.weatherDate?.main.temp_min) |
+                                                                number:'1.1-1')
+                                                                }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "tempMax" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/temp_max.png" alt="" class="temp-logo">
+                                                            <span class="temp-value">
+                                                                {{
+                                                                this.weatherService.celsius == true ?
+                                                                (this.weatherService.weatherDate?.main.temp_max | number:'1.1-1') :
+                                                                (this.weatherService.celsiusToFah(this.weatherService.weatherDate?.main.temp_max) |
+                                                                number:'1.1-1')
+                                                                }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+
+                                        <div class="card card-highlight">
+                                            <div class="row border-middle">
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "sunrise" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/sunrise.png" alt="" class="sun-img">
+                                                            <div class="sun-time">{{
+                                                                this.weatherService.convertTimes(this.weatherService.InfoCity?.sunrise) }} {{ "sunriseTime" | transloco }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ "sunset" | transloco }}</h5>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <img src="./../../assets/highlight/sunset.png" alt="" class="sun-img">
+                                                            <div class="sun-time">{{
+                                                                this.weatherService.convertTimes(this.weatherService.InfoCity?.sunset) }} {{ "sunsetTime" | transloco }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "feel" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/temp_like.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">
+                                                        {{
+                                                        this.weatherService.celsius == true ?
+                                                        (this.weatherService.weatherDate?.main.feels_like | number:'1.1-1') :
+                                                        (this.weatherService.celsiusToFah(this.weatherService.weatherDate?.main.feels_like) |
+                                                        number:'1.1-1')
+                                                        }}<sup>{{ this.weatherService.celsius == true ? "°C" : "°F"}}</sup>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "humidity" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/humidity.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{ this.weatherService.weatherDate?.main.humidity }}<sup>%</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "pressure" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/pressure.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{ this.weatherService.weatherDate?.main.pressure }}<sup>hPa</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3 mb-4">
+                                        <div class="card card-highlight">
+                                            <div class="card-body">
+                                                <h5 class="card-title">{{ "visibility" | transloco }}</h5>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img src="./../../assets/highlight/visibility.png" alt="" class="highlight-img">
+                                                    <span class="highlight-value">{{
+                                                        this.weatherService.convertKM(this.weatherService.weatherDate?.visibility) }}<sup>km</sup></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>    
+
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

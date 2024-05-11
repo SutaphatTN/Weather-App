@@ -1,0 +1,21 @@
+{
+    "title": "Yuku-Weather",
+    "search": "search city",
+    "now": "Now",
+    "5DForecast": "5-day Forecast",
+    "today": "Today's Weather",
+    "3HForecast": "3-hour Forecast",
+    "todayH": "Today's Highlight",
+    "tempMin": "Temperature Min",
+    "tempMax": "Temperature Max",
+    "sunrise": "Sunrise",
+    "sunriseTime": "AM",
+    "sunset": "Sunset",
+    "sunsetTime": "PM",
+    "feel": "Feel Like",
+    "humidity": "Humidity",
+    "pressure": "Pressure",
+    "visibility": "Visibility",
+    "chartTemp": "Temp",
+    "chartFeel": "Feel Like"
+}

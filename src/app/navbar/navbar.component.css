@@ -1,0 +1,65 @@
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #60a2d7;
+    padding: 1rem;
+}
+
+.menu{
+    display: flex;
+}
+
+.logo{
+    color: #ffffff;
+}
+
+/* english */
+.english-language{
+    margin-top: 5px;
+    border-radius: 500px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    font-size: small;
+}
+
+.english-language:hover{
+    color: #ffffff;
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+
+.english-language-active{
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+/* thailand */
+.thailand-language{
+    margin-top: 5px;
+    border-radius: 500px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    font-size: small;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.thailand-language:hover{
+    color: #ffffff;
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+
+.thailand-language-active{
+    color: #ffffff;
+    background-color: #1a1a1a;
+}

@@ -1,0 +1,395 @@
+.container {
+    background-size: cover;
+    background-position: center;
+}
+
+/* search */
+.search-input {
+    width: 100%;
+    text-align: right;
+    position: relative;
+    right: calc(0%);
+}
+
+.search-input input {
+    width: calc(100% - 50%);
+    border-radius: 20px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 20px;
+    cursor: pointer;
+}
+
+.search-input ul {
+    position: absolute;
+    list-style-type: none;
+    padding: 0;
+    top: calc(100% + 5px);
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    display: none;
+    width: calc(100% - 50%);
+}
+
+.search-input ul.active {
+    display: block;
+}
+
+.search-input li {
+    padding: 5px;
+}
+
+.search-input li button {
+    border: none;
+    background-color: transparent;
+    padding: 10px;
+    font-size: 14px;
+    color: black;
+    width: 100%;
+    text-align: left;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-input li button:hover {
+    background-color: #eaeaea;
+}
+
+/* location */
+.location-icon{
+    position: absolute;
+    top: 65%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.location-icon fa-icon{
+    border-radius: 500px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgb(0, 0, 0);
+}
+
+
+
+/* temperature */
+.nav-bar-metric{
+    display: flex;
+    flex-direction: row;
+    margin-right: 30px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* celsius */
+.celsius{
+    border-radius: 500px;
+    padding-left: 7px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    font-size: small;
+}
+
+.celsius:hover{
+    color: #ffffff;
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+
+.celsius-active{
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+/* fahrenheit */
+.fahrenheit{
+    border-radius: 500px;
+    padding-left: 7px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    font-size: small;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.fahrenheit:hover{
+    color: #ffffff;
+    background-color: #1a1a1a;
+    cursor: pointer;
+}
+
+.fahrenheit-active{
+    color: #ffffff;
+    background-color: #1a1a1a;
+}
+
+/* left */
+.left-now{
+    font-size: 26px;
+    font-weight: 400;
+    padding-left: 7px;
+    margin-top: 7px;
+}
+
+.left-time{
+    font-size: 18px;
+    font-weight: 400;
+    color: rgb(126, 118, 118);
+}
+
+.left-container-temp-data{
+    font-size: 62px;
+    font-weight: normal;
+}
+
+.left-container-temp-data sup{
+    font-size: 36px; 
+}
+
+.left-container-temp-img{
+    margin-left: 40px;
+}
+
+.left-container-temp-img img{
+    width: 150px;
+    height: 150px;
+}
+
+.left-container-description-value{
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.dividing-line{
+    height: 1px;
+    width: 100%;
+    background-color: rgb(230, 228, 228);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.left-container-date-daytime{
+    display: flex;
+    flex-direction: row;
+}
+
+.left-container-daytime-img{
+    margin-right: 10px;
+}
+
+.left-container-daytime-value{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.left-container-on-location{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.left-container-on-location-img{
+    margin-right: 10px;
+}
+
+.left-container-on-location-value{
+    font-size: 18px;
+    font-weight: 400;
+}
+
+/* right */
+.nav-bar-tabs{
+    margin-left: 20px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #dddddd;
+}
+
+.hour-forecast{
+    margin-left: 50px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #dddddd;
+}
+
+.right-container-today-cards{
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-container {
+    display: flex;
+}
+
+.card-time{
+    width: 90px;
+    height: 140px;
+    border-radius: 10px;
+    margin-left: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: large;
+    font-weight: 300;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.card-dayCel{
+    font-weight: 500;
+}
+
+.card-temp-img img{
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+}
+
+.right-container-highlight-title{
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    color: #dddddd;
+}
+
+.card-highlight {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.card-title{
+    font-size: 18px;
+}
+
+.temp-logo{
+    width: 80px;
+    height: 75px;
+}
+
+.temp-value{
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.temp-value sup{
+    font-size: 20px;
+}
+
+.sun-img{
+    width: 80px;
+    height: 75px;
+}
+
+.sun-time{
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
+}
+
+.highlight-img{
+    width: 70px;
+    height: 65px;
+}
+
+.highlight-value{
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.highlight-value sup{
+    font-size: 18px; 
+}
+
+@media only screen and (min-width: 768px) {
+    .container{
+        margin-top: 50px;
+        border-radius: 30px;
+    }
+    
+    .border-middle::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        border-left: 1px solid black;
+        height: 80%;
+        margin-top: 20px;
+    }
+
+    .underline{
+        border-left: 1px solid rgb(230, 228, 228);
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .location-icon {
+        transform: translateY(-150%);
+    }
+
+    .search-input input {
+        width: calc(100% - 50px);
+    }
+
+    .search-input ul {
+        width: calc(100% - 15%);
+    }
+
+    .right-container-today-cards {
+        display: flex;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        margin-left: 50px;
+    }
+
+    .card-container {
+        display: flex;
+    }
+
+    .card {
+        flex: 1;
+    }
+
+    .border-middle::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50%;
+        border-top: 1px solid black;
+        width: 90%;
+        margin-left: 15px;
+        margin-top: -10px;
+    }
+
+    .underline{
+        margin-top: 20px;
+        border-top: 1px solid rgb(230, 228, 228);
+    }
+
+    .nav-bar-metric{
+        margin-right: -5px;
+    }
+}

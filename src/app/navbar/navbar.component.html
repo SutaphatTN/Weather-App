@@ -1,0 +1,15 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+<nav>
+    <div class="logo">
+        <h3><fa-icon class="fa" [icon]="faRainbow" style="color: #ffffff; padding-right: 8px;"></fa-icon>{{ "title" | transloco }}</h3>
+    </div>
+    <ul class="menu">
+        <div class="english-language" (click)="engLanguageClick(); this.weatherService.changeLanguage('en')"
+            [className]="this.weatherService.eng == true ? 'english-language english-language-active':'english-language'">
+            EN</div>
+        <div class="thailand-language" (click)="thaiLanguageClick(); this.weatherService.changeLanguage('th')"
+            [className]="this.weatherService.thai == true ? 'thailand-language thailand-language-active':'thailand-language'">
+            TH</div>
+    </ul>
+</nav>
